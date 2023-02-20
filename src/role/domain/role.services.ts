@@ -17,7 +17,7 @@ export const saveRoleService = async (role: Role) => {
 
 export const getRoleService = async (id: number) => {
   const role = await sql`
-  select * from role where id = ${id}
+  select * from role where code = ${id}
 `
   return role[0];
 }
@@ -26,14 +26,14 @@ export const updateRoleService = async (id: number, role: Role) => {
     name: role.name,
   };
   const roleUpdated = await sql`
-  update role set name = ${roleToUpdate.name} where id = ${id} returning *
+  update role set name = ${roleToUpdate.name} where code = ${id} returning *
 `
   return roleUpdated[0];
 }
 
 export const deleteRoleService = async (id: number) => {
   const roleDeleted = await sql`
-  delete from role where id = ${id} returning *
+  delete from role where code = ${id} returning *
 `
   return roleDeleted[0];
 }
@@ -44,7 +44,7 @@ export const deleteRoleService = async (id: number) => {
  */
 export const getAllRolesService = async (page: number, limit: number) => {
   const roles = await sql`
-  select * from role order by id asc limit ${limit} offset ${page}
+  select * from role order by code asc limit ${limit} offset ${page}
 `
   return roles;
 }
