@@ -8,6 +8,10 @@ import roleRouter from "./role/infrastructure/role.router"
 const app: Application = express();
 app.use(myCors());
 app.use(express.json());
+app.use((req: any, res, next) => {
+  console.log(req.method, req.url);
+  next();
+})
 
 app.use('/user', userRouter);
 app.use('/role', roleRouter);
