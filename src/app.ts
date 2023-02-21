@@ -2,12 +2,15 @@ import express, { Application, NextFunction } from "express";
 import myCors from "cors";
 
 import userRouter from "./user/infrastructure/userRouter";
+import roleRouter from "./role/infrastructure/role.router"
+
 
 const app: Application = express();
 app.use(myCors());
 app.use(express.json());
 
 app.use('/user', userRouter);
+app.use('/role', roleRouter);
 
 
 app.use('/*', (req, res, next) => {
