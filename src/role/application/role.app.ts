@@ -1,15 +1,36 @@
-import { getRoleService, saveRoleService } from "../domain/role.services";
+import { getAllRolesService, getRoleService, saveRoleService } from "../domain/role.services";
 
-export const saveRoleApp = async (reqUser: any, data: any) => {
+/**
+ * 
+ * @param reqUser 
+ * @param data 
+ * @returns id of the role saved
+ */
+export const saveRoleApp = async (reqUser: any, data: any): Promise<number> => {
+
   const roleToSave = {
     name: data.name,
   };
-  const roleSaved = await saveRoleService(roleToSave);
-  return roleSaved;
 
+  if (typeof roleToSave.name !== 'string' || roleToSave.name.length < 3 || roleToSave.name.length > 50) {
+    throw new Error('Invalid name');
+  }
+
+  const roleSaved = await saveRoleService(roleToSave);
+  if (!roleSaved?.code) {
+    throw new Error('Error saving role');
+  }
+  return roleSaved.code;
 }
+
+
 export const getRoleByCodeApp = async (reqUser: any, code: string) => {
   const codeNow = parseInt(code);
-  const role = await getRoleService(codeNow);
-  return role;
+  return await getRoleService(codeNow);
 }
+
+
+export const getAllRolesApp = async (reqUser: any, page: number, limit: number) => {
+  return await getAllRolesService(page, limit);
+}
+

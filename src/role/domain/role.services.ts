@@ -1,18 +1,29 @@
 import sql from "../../myUtils/connectionDb";
 import Role from "./role.interface";
+const myTag = 'roleService';
 
-export const saveRoleService = async (role: Role) => {
-  const roleToSave = {
-    name: role.name,
-  };
-  const roleSaved = await sql`
-  insert into role
-    (name)
-  values
-    (${roleToSave.name})
-  returning *
-`
-  return roleSaved[0];
+export const saveRoleService = async (role: Role): Promise<Role> => {
+  try {
+    const roleToSave = {
+      name: role.name,
+    };
+    const roleSaved = await sql`
+    insert into role
+      (name)
+    values
+      (${roleToSave.name})
+    returning *
+  `
+    const dataToReturn: Role = {
+      name: roleSaved[0].name,
+      code: roleSaved[0].code,
+    }
+    return dataToReturn;
+  } catch (error: any) {
+    //clasificador de errores
+    error.message = myTag + '->' + error.message;
+    throw error;
+  }
 }
 
 export const getRoleService = async (id: number) => {
@@ -48,3 +59,9 @@ export const getAllRolesService = async (page: number, limit: number) => {
 `
   return roles;
 }
+
+//un servicio para obtener poleras color rojo
+
+//obtener poleras de color poleras de color verde
+
+//
