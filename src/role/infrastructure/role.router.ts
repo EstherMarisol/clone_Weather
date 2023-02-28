@@ -1,9 +1,11 @@
 import { Router } from "express";
-import { getAllRolesApp, getRoleByCodeApp, saveRoleApp } from "../application/role.app";
+import { deleteRoleApp, getAllRolesApp, getRoleByCodeApp, saveRoleApp, updateRoleApp } from "../application/role.app";
 
 const router = Router();
 
-router.post('/save', async (req: any, res, next) => {
+
+// url localhost:4000/role/
+router.post('/', async (req: any, res, next) => {
   const reqUser = req.reqUser;
   const data = req.body;
 
@@ -15,10 +17,35 @@ router.post('/save', async (req: any, res, next) => {
   }
 });
 
-
-router.get('/:code', async (req: any, res, next) => {
+// url localhost:4000/role/2
+router.put('/:code', async (req: any, res, next) => {
   const reqUser = req.reqUser;
   const data = req.body;
+  const code = req.params.code;
+
+  try {
+    let dataToSend = await updateRoleApp(reqUser, code, data)
+    res.send(dataToSend);
+  } catch (error) {
+    return next(error)
+  }
+});
+
+// url localhost:4000/role/2
+router.delete('/:code', async (req: any, res, next) => {
+  const reqUser = req.reqUser;
+  const code = req.params.code;
+  try {
+    let dataToSend = await deleteRoleApp(reqUser, code)
+    res.send(dataToSend);
+  } catch (error) {
+    return next(error)
+  }
+});
+
+// url localhost:4000/role/2
+router.get('/:code', async (req: any, res, next) => {
+  const reqUser = req.reqUser;
   const code = req.params.code;
   try {
     let dataToSend = await getRoleByCodeApp(reqUser, code);
@@ -28,6 +55,7 @@ router.get('/:code', async (req: any, res, next) => {
   }
 });
 
+// url localhost:4000/role/?page=0&limit=20
 router.get('/', async (req: any, res, next) => {
   const reqUser = req.reqUser;
   //const code = req.params.code;
@@ -40,4 +68,5 @@ router.get('/', async (req: any, res, next) => {
     return next(error)
   }
 });
+
 export default router;

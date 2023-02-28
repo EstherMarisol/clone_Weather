@@ -22,29 +22,30 @@ export const saveRoleService = async (role: Role): Promise<Role> => {
   } catch (error: any) {
     //clasificador de errores
     error.message = myTag + '->' + error.message;
+    console.log(error);
     throw error;
   }
 }
 
-export const getRoleService = async (id: number) => {
+export const getRoleService = async (code: number) => {
   const role = await sql`
-  select * from role where code = ${id}
+  select * from role where code = ${code}
 `
   return role[0];
 }
-export const updateRoleService = async (id: number, role: Role) => {
+export const updateRoleService = async (code: number, role: Role) => {
   const roleToUpdate = {
     name: role.name,
   };
   const roleUpdated = await sql`
-  update role set name = ${roleToUpdate.name} where code = ${id} returning *
+  update role set name = ${roleToUpdate.name} where code = ${code} returning *
 `
   return roleUpdated[0];
 }
 
-export const deleteRoleService = async (id: number) => {
+export const deleteRoleService = async (code: number) => {
   const roleDeleted = await sql`
-  delete from role where code = ${id} returning *
+  delete from role where code = ${code} returning *
 `
   return roleDeleted[0];
 }
@@ -59,9 +60,3 @@ export const getAllRolesService = async (page: number, limit: number) => {
 `
   return roles;
 }
-
-//un servicio para obtener poleras color rojo
-
-//obtener poleras de color poleras de color verde
-
-//
