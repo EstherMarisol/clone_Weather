@@ -1,7 +1,7 @@
 import express, { Application, NextFunction } from "express";
 import myCors from "cors";
 
-import userRouter from "./user/infrastructure/userRouter";
+import userRouter from "./user/infrastructure/user.router";
 import roleRouter from "./role/infrastructure/role.router"
 
 
